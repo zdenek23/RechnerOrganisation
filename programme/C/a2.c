@@ -11,6 +11,7 @@ int multiplyer = 8888;
 int newline = 7777;
 int result_ctrl = 0;
 int number_ctrl = 0;
+int nl_ctrl = 0;
 
 void my_getchar()
 {
@@ -51,6 +52,7 @@ void check_char()
 {
     if (i==EOF)
     {
+        my_printf(&newline, 0);
         halt = 1;
     }
     else if (i > 0x2f & i < 0x3a)
@@ -62,26 +64,32 @@ void check_char()
     {
         save();
         if (result_ctrl == 0) my_printf(&X, 1);
+        else my_printf(&newline, 0);
         result_ctrl = 0;
         number_ctrl = 0;
+        nl_ctrl = 1;
     }
     else if (i==0x2b)
     {
         if (number_ctrl>0) my_printf(&X, 0);
-        else if (result_ctrl>0) my_printf(&X, 0);
+        //else if (result_ctrl>0) my_printf(&X, 0);
         my_printf(&plus, 1);
         add();
-        my_printf(&X, 1);
+        my_printf(&X, 0);
         result_ctrl = 1;
+        nl_ctrl = 0;
+        number_ctrl = 0;
     }
     else if (i==0x2a)
     {
         if (number_ctrl>0) my_printf(&X, 0);
-        else if (result_ctrl>0) my_printf(&X, 0);
+        //else if (result_ctrl>0) my_printf(&X, 0);
         my_printf(&multiplyer, 1);
         multiply();
-        my_printf(&X, 1);
+        my_printf(&X, 0);
         result_ctrl = 1;
+        nl_ctrl = 0;
+        number_ctrl = 0;
     }
 }
 
