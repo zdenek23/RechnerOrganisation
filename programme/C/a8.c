@@ -12,6 +12,8 @@ int newline = 7777;
 int result_ctrl = 0;
 int number_ctrl = 0;
 int nl_ctrl = 0;
+int temp = 0;
+int temp2 = 0;
 
 void my_getchar()
 {
@@ -21,14 +23,23 @@ void my_getchar()
 void my_printf(int* value, int nl)
 {
     printf("%d", *value);
-    if (nl) printf("%d", newline);
+    if (nl==0) goto D00;
+    printf("%d", newline);
+D00:;
 }
 
 void convert()
 {
-    if(digit) X *= 10;
-    else X = 0;
-    X = X + (i - 0x30);
+    if(digit==0) goto E00;
+    temp = 10;
+    temp2 = X;
+    temp -= 1;
+C00:X += temp2;
+    temp--;
+    if (temp>0) goto C00;
+    goto E01;
+E00:X = 0;
+E01:X = X + (i - 0x30);
     digit = 1;
 }
 
@@ -45,7 +56,14 @@ void add()
 
 void multiply()
 {
-    X *= *--buffer_ptr;
+    temp = *--buffer_ptr;
+    temp2 = X;
+    temp -= 1;
+B00:if (temp==0) goto B01;
+    X += temp2;
+    temp--;
+    goto B00;
+B01:;
 }
 
 void check_char()
@@ -93,11 +111,8 @@ void check_char()
 
 int main()
 {
-    while(1)
-    {
-        my_getchar();
-        check_char();
-        if (halt) break;
-    }
+A00:my_getchar();
+    check_char();
+    if (halt==0) goto A00;
     return 0;
 }

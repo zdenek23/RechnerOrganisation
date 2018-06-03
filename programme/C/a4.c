@@ -12,6 +12,8 @@ int newline = 7777;
 int result_ctrl = 0;
 int number_ctrl = 0;
 int nl_ctrl = 0;
+int temp = 0;
+int temp2 = 0;
 
 void my_getchar()
 {
@@ -45,7 +47,14 @@ void add()
 
 void multiply()
 {
-    X *= *--buffer_ptr;
+    temp = *--buffer_ptr;
+    temp2 = X;
+    temp -= 1;
+    while (temp>0)
+    {
+        X += temp2;
+        temp--;
+    }
 }
 
 void check_char()
