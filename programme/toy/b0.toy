@@ -1,0 +1,37 @@
+00: 0000 	;      BUF DUP 0x10                ;int buffer[16] = {0};
+10: 7FF0 	;  MAIN LDA    RF  0xF0            ;initialize stack pointer
+11: 7101 	;       LDA    R1  1               ;initialize constant 1
+12: 7C00 	;       LDA    RC  0x00            ;int i;
+13: 7B00 	;       LDA    RB  0x00            ;int X;
+14: 7A00 	;       LDA    RA  0x00            ;int digit;
+15: 7900 	;       LDA    R9  BUF             ;int* R9 = buffer;
+16: 7800 	;       LDA    R8  0x00            ;int halt;
+17: 7780 	;       LDA    R7  0x80            ;int plus = 0x802B;
+18: 7208 	;       LDA    R2  8               ;
+19: 5772 	;       SHL    R7  R7  R2          ;
+1A: 722B 	;       LDA    R2  0x2B            ;           
+1B: 1772 	;       ADD    R7  R7  R2          ;
+1C: 7680 	;       LDA    R6  0x80            ;int multiplier = 0x802A;
+1D: 7208 	;       LDA    R2  8               ;
+1E: 5662 	;       SHL    R6  R6  R2          ;
+1F: 722A 	;       LDA    R2  0x2A            ;
+20: 1662 	;       ADD    R6  R6  R2          ;
+21: 7580 	;       LDA    R5  0x80            ;int newline = 0x800A;
+22: 7208 	;       LDA    R2  8               ;
+23: 5552 	;       SHL    R5  R5  R2          ;
+24: 720A 	;       LDA    R2  0x0A            ;
+25: 1552 	;       ADD    R5  R5  R2          ;
+26: 7400 	;       LDA    R4  0X00            ;int controller;
+27: FE2D 	;      JL  RE  LL0                 ;A00:my_getchar();
+28: 0000 	;      HLT                         ;return 0;
+29: 83FE 	;  POL LD  R3  0xFE                ;check control register
+2A: C329 	;      BZ  R3  POL                 ;if control register is 0, goto POL
+2B: 90FE 	;      ST  R0  0xFE                ;reset control register to 0
+2C: EE00 	;      JR  RE                      ;RET
+2D: 2FF1 	;  LL0 SUB RF  RF  R1              ;increase the stack by 1 position
+2E: BE0F 	;      STI RE  RF                  ;push RE
+2F: FE29 	;      JL  RE  POL                 ;call pulling routine
+30: 8CFF 	;      LD  RC  0xFF                ;R2 = getchar();
+31: AE0F 	;      LDI RE  RF                  ;copy the return adress from TOS into RE
+32: 1FF1 	;      ADD RF  RF  R1              ;shrink the stack by 1 position
+33: EE00 	;      JR  RE                      ;RET

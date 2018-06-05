@@ -17,19 +17,19 @@ BUF DUP 0x10                ;int buffer[16] = {0};
                             ;
                             ;int main()
                             ;{
-MAIN LDA RF  0xF0        ;initialize stack-pointer
-     LDA R1  0x01        ;R1=1;
-     ADD R2  R0  R0      ;R2 = 0;
-     ADD R3  R0  R0      ;R3 = 0;
-     ADD R4  R0  R0      ;R4 = 0;
-     LDA RA  BUF         ;R5 = buffer;
-     ADD R6  R0  R0      ;R6 = 0;
-     LDA R7  0x802B      ;R7 = 0x802B;
-     LDA R8  0x802A      ;R8 = 0x802A;
-     LDA R9  0x800A      ;R9 = 0x800A;
-     ADD RA  R0  R0      ;RA = 0;
-     ADD RB  R0  R0      ;RB = 0;
-     ADD RD  R0  R0      ;RD = 0;
+MAIN LDA RF  0xF0           ;initialize stack-pointer
+     LDA R1  0x01           ;R1=1;
+     ADD R2  R0  R0         ;R2 = 0;
+     ADD R3  R0  R0         ;R3 = 0;
+     ADD R4  R0  R0         ;R4 = 0;
+     LDA RA  BUF            ;R5 = buffer;
+     ADD R6  R0  R0         ;R6 = 0;
+     LDA R7  0x802B         ;R7 = 0x802B;
+     LDA R8  0x802A         ;R8 = 0x802A;
+     LDA R9  0x800A         ;R9 = 0x800A;
+     ADD RA  R0  R0         ;RA = 0;
+     ADD RB  R0  R0         ;RB = 0;
+     ADD RD  R0  R0         ;RD = 0;
                             ;
 A00 JL  RE  LL0             ;A00:my_getchar();
     JL  RE  CC              ;check_char();
@@ -41,18 +41,27 @@ A00 JL  RE  LL0             ;A00:my_getchar();
 POL LD  RA  0xFE            ;check control register
     BZ  RA  POL             ;if control register is 0, goto POL
     ST  R0  0xFE            ;reset control register to 0
-    JR  RE                  ;return
+    JR  RE                  ;RET
 
                             ;void my_getchar()
                             ;{
-CC  SUB RF  RF  R1          ;increase the stack by 1 position
+LL0  SUB RF  RF  R1          ;increase the stack by 1 position
     STI RE  RF              ;push RE
-    JL  RE  POL             
+    JL  RE  POL             ;call pulling routine
     LD  R2  0xFF            ;R2 = getchar();
-}
+    LDI RE  RF              ;copy the return adress from TOS into RE
+    ADD RF  RF  R1          ;shrink the stack by 1 position
+    JR  RE                  ;RET
+                            ;}
 
-void my_printf(int* value, int nl)
-{
+                            ;void my_printf(int* value, int nl)
+                            ;{
+PF  SUB RF  RF  R1          ;increase the stack by 1 position
+    STI RE  RF              ;push RE
+    JL  RE  POL             ;call polling routine
+    ADD RE  RF  R0          ;
+    SUB RF  RF  R1          ;
+    LDI RA  RE              ;
     printf("%d", *value);
     if (nl==0) goto D00;
     printf("%d", R9);
