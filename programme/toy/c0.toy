@@ -1,0 +1,29 @@
+10: 7FF0 	;  MAIN LDA RF 0xF0            ;initialize stack pointer
+11: 1EF0 	;       ADD RE RF R0           ;initializa MAIN base pointer
+12: 7101 	;       LDA R1 1               ;constant 1
+13: 742C 	;       LDA R4 BUF             ;int* buffer;
+14: 952B 	;       ST  R5 H               ;int halt;
+15: FD1A 	;  A0  JL  RD  LL0             ;A0:getchar();
+16: C515 	;      BZ  R5  A0              ;if (halt==0) goto A00;
+17: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
+18: AE0F 	;      LDI RE  RF              ;restore old base pointer
+19: 0000 	;      HLT                     ;return 0;
+1A: 2FF1 	;  LL0 SUB RF  RF  R1          ;
+1B: BD0F 	;      STI RD  RF              ;PUSH RD
+1C: 2FF1 	;      SUB RF  RF  R1          ;prolog
+1D: BE0F 	;      STI RE  RF              ;PUSH RE
+1E: 1EF0 	;      ADD RE  RF  R0          ;initialize getchar() base pointer
+1F: 8CFF 	;      LD  RC  0xFF            ;read from stdin
+20: 7203 	;      LDA R2  3               ;R2 = EOF;
+21: 222C 	;      SUB R2  R2  RC          ;temp = EOF - RC
+22: C224 	;      BZ  R2  F1              ;if (RC==EOF) goto F1
+23: C025 	;      BZ  R0  F2              ;goto F2
+24: 1510 	;  F1  ADD R5  R1  R0          ;halt = 1;
+25: 1FE0 	;  F2  ADD RF  RE  R0          ;epilog
+26: AE0F 	;      LDI RE  RF              ;
+27: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+28: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+29: 1FF1 	;      ADD RF  RF R1           ;
+2A: ED00 	;      JR  RD                  ;
+2B: 0000 	;  H       DW  0               ;int halt;
+2C: 0000 	;  BUF     DUP 0x10            ;buffer

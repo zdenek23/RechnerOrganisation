@@ -46,3 +46,6 @@ LL0 SUB RF  RF  R1              ;increase the stack by 1 position
     ADD RF  RF  R1              ;shrink the stack by 1 position
     JR  RE                      ;RET
                                 ;}
+                                ;void my_printf(int* value, int nl)
+                                ;{
+                                
