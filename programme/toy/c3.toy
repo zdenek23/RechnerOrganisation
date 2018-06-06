@@ -1,0 +1,73 @@
+10: 7FF0 	;  MAIN LDA RF 0xF0            ;initialize stack pointer
+11: 1EF0 	;       ADD RE RF  R0          ;initialize MAIN base pointer
+12: 7101 	;       LDA R1 1               ;constant 1
+13: 7456 	;       LDA R4 BUF             ;int* buffer;
+14: FD25 	;  A0  JL  RD  LL0             ;A0:getchar();
+15: 7266 	;      LDA R2  T               ;R2* = T;
+16: 2FF1 	;      SUB RF  RF  R1          ;
+17: B20F 	;      STI R2  RF              ;parameter int* value;
+18: 2FF1 	;      SUB RF  RF  R1          ;
+19: B10F 	;      STI R1  RF              ;parameter newline = 1;
+1A: FD37 	;      JL  RD  PF              ;print() for testing
+1B: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+1C: 1FF2 	;      ADD RF  RF  R2          ;
+1D: C514 	;      BZ  R5  A0              ;if (halt==0) goto A00;
+1E: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
+1F: AE0F 	;      LDI RE  RF              ;restore old base pointer
+20: 0000 	;      HLT                     ;return 0;
+21: 82FE 	;  POL LD  R2  0xFE        ;   check control register
+22: C221 	;      BZ  R2  POL         ;   if control register is 0, goto POL    
+23: 90FE 	;      ST  R0  0xFE        ;   reset control register to 0
+24: ED00 	;      JR  RD
+25: 2FF1 	;  LL0 SUB RF  RF  R1          ;
+26: BD0F 	;      STI RD  RF              ;PUSH RD
+27: 2FF1 	;      SUB RF  RF  R1          ;prolog
+28: BE0F 	;      STI RE  RF              ;PUSH RE
+29: 1EF0 	;      ADD RE  RF  R0          ;initialize getchar() base pointer
+2A: FD21 	;      JL  RD  POL             ;CALL polling routine    
+2B: 8CFF 	;      LD  RC  0xFF            ;read from stdin
+2C: 7203 	;      LDA R2  3               ;R2 = EOF;
+2D: 222C 	;      SUB R2  R2  RC          ;temp = EOF - RC
+2E: C230 	;      BZ  R2  F1              ;if (RC==EOF) goto F1
+2F: C031 	;      BZ  R0  F2              ;goto F2
+30: 1510 	;  F1  ADD R5  R1  R0          ;halt = 1;
+31: 1FE0 	;  F2  ADD RF  RE  R0          ;epilog
+32: AE0F 	;      LDI RE  RF              ;
+33: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+34: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+35: 1FF1 	;      ADD RF  RF  R1          ;
+36: ED00 	;      JR  RD                  ;
+37: 2FF1 	;  PF  SUB RF  RF  R1          ;
+38: BD0F 	;      STI RD  RF              ;PUSH RD
+39: 2FF1 	;      SUB RF  RF  R1          ;prolog
+3A: BE0F 	;      STI RE  RF              ;PUSH RE
+3B: 2EE1 	;      SUB RE  RE  R1          ;
+3C: A20E 	;      LDI R2  RE              ;R2 = &value;
+3D: 2EE1 	;      SUB RE  RE  R1          ;R3 = newline;
+3E: A30E 	;      LDI R3  RE              ;
+3F: 1EF0 	;      ADD RE  RF  R0          ;initialize printf() base pointer
+40: 2FF1 	;      SUB RF  RF  R1          ;PUSH &value as local variable
+41: B20F 	;      STI R2  RF              ;
+42: 2FF1 	;      SUB RF  RF  R1          ;PUSH newline as local variable
+43: B20F 	;      STI R2  RF              ;
+44: FD21 	;      JL  RD  POL             ;CALL polling routine
+45: 1FF1 	;      ADD RF  RF  R1          ;
+46: A20F 	;      LDI R2  RF              ;R2 = &value;
+47: 2FF1 	;      SUB RF  RF  R1          ;
+48: A202 	;      LDI R2  R2              ;R2 = value;
+49: 92FF 	;      ST  R2  0xFF            ;printf("%d", *value);
+4A: A20F 	;      LDI R2  RF              ; 
+4B: C250 	;      BZ  R2  D0              ;if (nl==0)
+4C: FD21 	;      JL  RD  POL             ;CALL polling routine
+4D: 7267 	;      LDA R2  N               ;R2 = newline;
+4E: A202 	;      LDI R2  R2              ; 
+4F: 92FF 	;      ST  R2  0xFF            ;
+50: 1FE0 	;  D0  ADD RF  RE  R0          ;epilog
+51: AE0F 	;      LDI RE  RF              ;
+52: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+53: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+54: 1FF1 	;      ADD RF  RF  R1          ;
+55: ED00 	;      JR  RD                  ;
+56: 0000 	;  BUF     DUP 0x10            ;buffer
+66: 0E35 	;  T       DW  0xE35           ;int test;
+67: 800A 	;  N       DW  0x800A          ;int newline = 0x800A;

@@ -32,7 +32,7 @@ LL0 SUB RF  RF  R1          ;
     SUB R2  R2  RC          ;temp = EOF - RC
     BZ  R2  F1              ;if (RC==EOF) goto F1
     BZ  R0  F2              ;goto F2
-F1  ADD R5  R1  R0          ;halt = 1;
+F1  ADD R5   R1  R0          ;halt = 1;
                             ;
 F2  ADD RF  RE  R0          ;epilog
     LDI RE  RF              ;

@@ -18,7 +18,7 @@
 21: 222C 	;      SUB R2  R2  RC          ;temp = EOF - RC
 22: C224 	;      BZ  R2  F1              ;if (RC==EOF) goto F1
 23: C025 	;      BZ  R0  F2              ;goto F2
-24: 1510 	;  F1  ADD R5  R1  R0          ;halt = 1;
+24: 1510 	;  F1  ADD R5   R1  R0          ;halt = 1;
 25: 1FE0 	;  F2  ADD RF  RE  R0          ;epilog
 26: AE0F 	;      LDI RE  RF              ;
 27: 1FF1 	;      ADD RF  RF  R1          ;POP RE

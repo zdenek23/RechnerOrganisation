@@ -16,10 +16,17 @@ A0  JL  RD  LL0             ;A0:getchar();
     
     ADD RF  RE  R0          ;epilog: restore old stack pointer
     LDI RE  RF              ;restore old base pointer
-    ADD RF  RF  R1          ;POP RE
     HLT                     ;return 0;
                             ;}
                             ;
+;=============================================================
+; polling routine: return address in RD,
+;                  returns no value:
+POL LD  R2  0xFE        ;   check control register
+    BZ  R2  POL         ;   if control register is 0, goto POL    
+    ST  R0  0xFE        ;   reset control register to 0
+    JR  RD
+
 ;=============================================================
                             ;getchar(){
 LL0 SUB RF  RF  R1          ;
@@ -27,13 +34,14 @@ LL0 SUB RF  RF  R1          ;
     SUB RF  RF  R1          ;prolog
     STI RE  RF              ;PUSH RE
     ADD RE  RF  R0          ;initialize getchar() base pointer
-                            ;    
+                            ;
+    JL  RD  POL             ;CALL polling routine    
     LD  RC  0xFF            ;read from stdin
     LDA R2  3               ;R2 = EOF;
     SUB R2  R2  RC          ;temp = EOF - RC
     BZ  R2  F1              ;if (RC==EOF) goto F1
     BZ  R0  F2              ;goto F2
-F1  ADD R5  R1  R0          ;halt = 1;
+F1  ADD R5   R1  R0         ;halt = 1;
                             ;
 F2  ADD RF  RE  R0          ;epilog
     LDI RE  RF              ;
@@ -41,6 +49,6 @@ F2  ADD RF  RE  R0          ;epilog
     LDI RD  RF              ;POP return adress from stack
     ADD RF  RF R1           ;
     JR  RD                  ;
-
+                            ;
 H       DW  0               ;int halt;
 BUF     DUP 0x10            ;buffer

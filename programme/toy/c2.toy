@@ -1,0 +1,77 @@
+10: 7FF0 	;  MAIN LDA RF 0xF0            ;initialize stack pointer
+11: 1EF0 	;       ADD RE RF  R0          ;initializa MAIN base pointer
+12: 7101 	;       LDA R1 1               ;constant 1
+13: 2FF1 	;       SUB RF RF  R1          ;local variable int out;
+14: 745A 	;       LDA R4 BUF             ;int* buffer;
+15: FD26 	;  A0  JL  RD  LL0             ;A0:getchar();
+16: 726A 	;      LDA R2  T               ;R2* = T;
+17: 2FF1 	;      SUB RF  RF  R1          ;
+18: B20F 	;      STI R2  RF              ;parameter int* value;
+19: 2FF1 	;      SUB RF  RF  R1          ;
+1A: B10F 	;      STI R1  RF              ;parameter newline = 1;
+1B: FD38 	;      JL  RD  PF              ;print() for testing
+1C: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+1D: 1FF2 	;      ADD RF  RF  R2          ;
+1E: C515 	;      BZ  R5  A0              ;if (halt==0) goto A00;
+1F: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
+20: AE0F 	;      LDI RE  RF              ;restore old base pointer
+21: 0000 	;      HLT                     ;return 0;
+22: 82FE 	;  POL LD  R2  0xFE        ;   check control register
+23: C222 	;      BZ  R2  POL         ;   if control register is 0, goto POL    
+24: 90FE 	;      ST  R0  0xFE        ;   reset control register to 0
+25: ED00 	;      JR  RD
+26: 2FF1 	;  LL0 SUB RF  RF  R1          ;
+27: BD0F 	;      STI RD  RF              ;PUSH RD
+28: 2FF1 	;      SUB RF  RF  R1          ;prolog
+29: BE0F 	;      STI RE  RF              ;PUSH RE
+2A: 1EF0 	;      ADD RE  RF  R0          ;initialize getchar() base pointer
+2B: FD22 	;      JL  RD  POL             ;CALL polling routine    
+2C: 8CFF 	;      LD  RC  0xFF            ;read from stdin
+2D: 7203 	;      LDA R2  3               ;R2 = EOF;
+2E: 222C 	;      SUB R2  R2  RC          ;temp = EOF - RC
+2F: C231 	;      BZ  R2  F1              ;if (RC==EOF) goto F1
+30: C032 	;      BZ  R0  F2              ;goto F2
+31: 1510 	;  F1  ADD R5   R1  R0         ;halt = 1;
+32: 1FE0 	;  F2  ADD RF  RE  R0          ;epilog
+33: AE0F 	;      LDI RE  RF              ;
+34: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+35: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+36: 1FF1 	;      ADD RF  RF R1           ;
+37: ED00 	;      JR  RD                  ;
+38: 2FF1 	;  PF  SUB RF  RF  R1          ;
+39: BD0F 	;      STI RD  RF              ;PUSH RD
+3A: 2FF1 	;      SUB RF  RF  R1          ;prolog
+3B: BE0F 	;      STI RE  RF              ;PUSH RE
+3C: 1EF0 	;      ADD RE  RF  R0          ;initialize getchar() base pointer
+3D: 7203 	;      LDA R2  3               ;find &value on stack
+3E: 1EE2 	;      ADD RE  RE  R2          ;
+3F: A20E 	;      LDI R2  RE              ;R2* = value;
+40: 2FF1 	;      SUB RF  RF  R1          ;PUSH &value as local variable
+41: B20F 	;      STI R2  RF              ;
+42: 2EE1 	;      SUB RE  RE  R1          ;R2 = newline;
+43: A20E 	;      LDI R2  RE              ;
+44: 2FF1 	;      SUB RF  RF  R1          ;PUSH newline as local variable
+45: B20F 	;      STI R2  RF              ;
+46: 7302 	;      LDA R3  2               ;restore base pointer
+47: 2EE3 	;      SUB RE  RE  R3          ;
+48: FD22 	;      JL  RD  POL             ;CALL polling routine
+49: 1FF1 	;      ADD RF  RF  R1          ;
+4A: A20F 	;      LDI R2  RF              ;R2 = &value;
+4B: 2FF1 	;      SUB RF  RF  R1          ;
+4C: A202 	;      LDI R2  R2              ;R2 = value;
+4D: 92FF 	;      ST  R2  0xFF            ;printf("%d", *value);
+4E: A20F 	;      LDI R2  RF              ; 
+4F: C254 	;      BZ  R2  D0              ;if (nl==0)
+50: FD22 	;      JL  RD  POL             ;CALL polling routine
+51: 726B 	;      LDA R2  N               ;R2 = newline;
+52: A202 	;      LDI R2  R2              ; 
+53: 92FF 	;      ST  R2  0xFF            ;
+54: 1FE0 	;  D0  ADD RF  RE  R0          ;epilog
+55: AE0F 	;      LDI RE  RF              ;
+56: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+57: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+58: 1FF1 	;      ADD RF  RF R1           ;
+59: ED00 	;      JR  RD                  ;
+5A: 0000 	;  BUF     DUP 0x10            ;buffer
+6A: 0E35 	;  T       DW  0xE35           ;int test;
+6B: 800A 	;  N       DW  0x800A          ;int newline = 0x800A;
