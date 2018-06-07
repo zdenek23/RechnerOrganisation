@@ -15,9 +15,9 @@
 1E: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
 1F: AE0F 	;      LDI RE  RF              ;restore old base pointer
 20: 0000 	;      HLT                     ;return 0;
-21: 82FE 	;  POL LD  R2  0xFE        ;   check control register
-22: C221 	;      BZ  R2  POL         ;   if control register is 0, goto POL    
-23: 90FE 	;      ST  R0  0xFE        ;   reset control register to 0
+21: 82FE 	;  POL LD  R2  0xFE            ;check control register
+22: C221 	;      BZ  R2  POL             ;if control register is 0, goto POL    
+23: 90FE 	;      ST  R0  0xFE            ;reset control register to 0
 24: ED00 	;      JR  RD
 25: 2FF1 	;  LL0 SUB RF  RF  R1          ;
 26: BD0F 	;      STI RD  RF              ;PUSH RD

@@ -1,0 +1,37 @@
+10: 7FF0 	;  MAIN LDA RF 0xF0            ;initialize stack pointer
+11: 1EF0 	;       ADD RE RF  R0          ;initialize MAIN base pointer
+12: 7101 	;       LDA R1 1               ;constant 1
+13: 7432 	;       LDA R4 BUF             ;int* buffer;
+14: FD18 	;      JL  RD  CV              ;
+15: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
+16: AE0F 	;      LDI RE  RF              ;restore old base pointer
+17: 0000 	;      HLT                     ;return 0;
+18: 2FF1 	;  CV  SUB RF  RF  R1          ;
+19: BD0F 	;      STI RD  RF              ;PUSH RD
+1A: 2FF1 	;      SUB RF  RF  R1          ;prolog
+1B: BE0F 	;      STI RE  RF              ;PUSH RE
+1C: 1EF0 	;      ADD RE  RF  R0          ;initialize convert() base pointer
+1D: 8B42 	;      LD  RB  X               ;                        
+1E: C626 	;      BZ  R6  E0              ;if (digit==0) goto E0;
+1F: 720A 	;      LDA R2  0xA             ;temp = 10;
+20: 13B0 	;      ADD R3  RB  R0          ;temp2 = X;
+21: 2221 	;      SUB R2  R2  R1          ;temp -= 1;
+22: 1BB3 	;  C0  ADD RB  RB  R3          ;X += temp2;
+23: 2221 	;      SUB R2  R2  R1          ;temp--;
+24: D222 	;      BP  R2  C0              ;if (temp) goto C0;
+25: C027 	;      BZ  R0  E1              ;
+26: 7B00 	;  E0  LDA RB  0               ;X = 0;
+27: 7230 	;  E1  LDA R2  0x30            ;
+28: 22C2 	;      SUB R2  RC  R2          ;
+29: 1BB2 	;      ADD RB  RB  R2          ;X = X + (i - 0x30);
+2A: 7601 	;      LDA R6  1               ;digit = 1;
+2B: 9B42 	;      ST  RB  X               ;
+2C: 1FE0 	;      ADD RF  RE  R0          ;epilog
+2D: AE0F 	;      LDI RE  RF              ;
+2E: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+2F: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+30: 1FF1 	;      ADD RF  RF  R1          ;
+31: ED00 	;      JR  RD                  ;
+32: 0000 	;  BUF     DUP 0x10            ;buffer
+42: 0003 	;  X       DW  3               ;int X;
+43: 800A 	;  N       DW  0x800A          ;int newline = 0x800A;
