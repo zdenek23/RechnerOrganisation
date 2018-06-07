@@ -156,7 +156,7 @@ F07:temp = 0x2b;
     temp -= i;
     if (temp==0) goto F0A;
     goto F0B;
-F0A:if (number_ctrl==0) goto F0C;
+F0A:if (number_ctrl==0) goto F0C;  
     my_printf(&X, 0);
 F0C:my_printf(&plus, 1);
     add();

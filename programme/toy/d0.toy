@@ -1,0 +1,217 @@
+10: 7FF4 	;  MAIN LDA RF 0xF4            ;initialize stack pointer
+11: 1EF0 	;       ADD RE RF  R0          ;initialize MAIN base pointer
+12: 7101 	;       LDA R1 1               ;constant 1
+13: 74E4 	;       LDA R4 BUF             ;int* buffer;
+14: FDB3 	;  A0  JL  RD  LL0             ;A0:getchar();
+15: 7203 	;      LDA R2  3               ;temp = EOF;
+16: 222C 	;      SUB R2  R2  RC          ;temp -= i;
+17: C219 	;      BZ  R2  F1              ;if (temp==0) goto F1;
+18: C023 	;      BZ  R0  F2              ;goto F2;
+19: 72F5 	;  F1  LDA R2  N               ;R2* = N;
+1A: 2FF1 	;      SUB RF  RF  R1          ;
+1B: B20F 	;      STI R2  RF              ;parameter int* value;
+1C: 2FF1 	;      SUB RF  RF  R1          ;
+1D: B00F 	;      STI R0  RF              ;parameter newline = 0;
+1E: FDC5 	;      JL  RD  PF              ;print()
+1F: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+20: 1FF2 	;      ADD RF  RF  R2          ;
+21: 7501 	;      LDA R5  1               ;halt = 1;
+22: C0AB 	;      BZ  R0  F0              ;goto F0;
+23: 7A2F 	;  F2  LDA RA  0x2F            ;temp = 0x2f;
+24: 2ACA 	;      SUB RA  RC  RA          ;temp = i - temp
+25: DA27 	;      BP  RA  F3              ;if (temp>0) goto F3;
+26: C03C 	;      BZ  R0  F5              ;goto F5;
+27: 7A3A 	;  F3  LDA RA  0x3A            ;temp = 0x3a;
+28: 2AAC 	;      SUB RA  RA  RC          ;temp -= i;
+29: DA2B 	;      BP  RA  F4              ;if (temp>0) goto F4;
+2A: C03C 	;      BZ  R0  F5              ;goto F5;
+2B: 8BF4 	;  F4  LD  RB  X               ;                        
+2C: C634 	;      BZ  R6  E0              ;if (digit==0) goto E0;
+2D: 720A 	;      LDA R2  0xA             ;temp = 10;
+2E: 13B0 	;      ADD R3  RB  R0          ;temp2 = X;
+2F: 2221 	;      SUB R2  R2  R1          ;temp -= 1;
+30: 1BB3 	;  C0  ADD RB  RB  R3          ;X += temp2;
+31: 2221 	;      SUB R2  R2  R1          ;temp--;
+32: D230 	;      BP  R2  C0              ;if (temp) goto C0;
+33: C035 	;      BZ  R0  E1              ;
+34: 7B00 	;  E0  LDA RB  0               ;X = 0;
+35: 7230 	;  E1  LDA R2  0x30            ;
+36: 22C2 	;      SUB R2  RC  R2          ;
+37: 1BB2 	;      ADD RB  RB  R2          ;X = X + (i - 0x30);
+38: 7601 	;      LDA R6  1               ;digit = 1;
+39: 9BF4 	;      ST  RB  X               ;
+3A: 7801 	;      LDA R8  1               ;number_ctrl = 1;
+3B: C0AB 	;      BZ  R0  F0              ;goto F0;
+3C: 7A0A 	;  F5  LDA RA  0x0A            ;temp = 0x0a;
+3D: 2AAC 	;      SUB RA  RA  RC          ;temp -= i;
+3E: CA40 	;      BZ  RA  F6              ;if (temp==0) goto F6;
+3F: C05B 	;      BZ  R0  F7              ;goto F7;
+40: 8BF4 	;  F6  LD  RB  X               ;
+41: BB04 	;      STI RB  R4              ;*buffer_ptr = X;
+42: 1441 	;      ADD R4  R4  R1          ;buffer_ptr++;
+43: 7600 	;      LDA R6  0               ;digit = 0;
+44: 9BF4 	;      ST  RB  X               ;
+45: D74F 	;      BP  R7  F8              ;if (result_ctrl>0) goto F8;
+46: 72F4 	;      LDA R2  X               ;R2* = X;
+47: 2FF1 	;      SUB RF  RF  R1          ;
+48: B20F 	;      STI R2  RF              ;parameter int* value;
+49: 2FF1 	;      SUB RF  RF  R1          ;
+4A: B10F 	;      STI R1  RF              ;parameter newline = 1;
+4B: FDC5 	;      JL  RD  PF              ;print()
+4C: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+4D: 1FF2 	;      ADD RF  RF  R2          ;
+4E: C057 	;      BZ  R0  F9              ;goto F9;
+4F: 72F5 	;  F8  LDA R2  N               ;R2* = newline;
+50: 2FF1 	;      SUB RF  RF  R1          ;
+51: B20F 	;      STI R2  RF              ;parameter int* value;
+52: 2FF1 	;      SUB RF  RF  R1          ;
+53: B00F 	;      STI R0  RF              ;parameter newline = 0;
+54: FDC5 	;      JL  RD  PF              ;print()
+55: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+56: 1FF2 	;      ADD RF  RF  R2          ;
+57: 7700 	;  F9  LDA R7  0               ;result_ctrl = 0;
+58: 7800 	;      LDA R8  0               ;number_ctrl = 0;
+59: 7901 	;      LDA R9  1               ;nl_ctrl = 1;
+5A: C0AB 	;      BZ  R0  F0              ;goto F0;
+5B: 7A2B 	;  F7  LDA RA  0x2B            ;temp = 0x2b;
+5C: 2AAC 	;      SUB RA  RA  RC          ;temp -= i;
+5D: CA5F 	;      BZ  RA  FA              ;if (temp==0) goto FA;
+5E: C081 	;      BZ  R0  FB              ;goto FB;
+5F: C868 	;  FA  BZ  R8  FC              ;if (number_ctrl==0) goto FC;
+60: 72F4 	;      LDA R2  X               ;R2* = X;
+61: 2FF1 	;      SUB RF  RF  R1          ;
+62: B20F 	;      STI R2  RF              ;parameter int* value;
+63: 2FF1 	;      SUB RF  RF  R1          ;
+64: B00F 	;      STI R0  RF              ;parameter newline = 0;
+65: FDC5 	;      JL  RD  PF              ;print()
+66: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+67: 1FF2 	;      ADD RF  RF  R2          ;
+68: 72F6 	;  FC  LDA R2  P               ;R2* = plus;
+69: 2FF1 	;      SUB RF  RF  R1          ;
+6A: B20F 	;      STI R2  RF              ;parameter int* value;
+6B: 2FF1 	;      SUB RF  RF  R1          ;
+6C: B10F 	;      STI R1  RF              ;parameter newline = 1;
+6D: FDC5 	;      JL  RD  PF              ;print()
+6E: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+6F: 1FF2 	;      ADD RF  RF  R2          ;
+70: 8BF4 	;      LD  RB  X               ;
+71: 2441 	;      SUB R4  R4  R1          ;buffer_ptr--;
+72: A204 	;      LDI R2  R4              ;temp = *buffer_ptr;
+73: 1BB2 	;      ADD RB  RB  R2          ;X += temp;
+74: 9BF4 	;      ST  RB  X               ;
+75: 72F4 	;      LDA R2  X               ;R2* = X;
+76: 2FF1 	;      SUB RF  RF  R1          ;
+77: B20F 	;      STI R2  RF              ;parameter int* value;
+78: 2FF1 	;      SUB RF  RF  R1          ;
+79: B00F 	;      STI R0  RF              ;parameter newline = 0;
+7A: FDC5 	;      JL  RD  PF              ;print()
+7B: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+7C: 1FF2 	;      ADD RF  RF  R2          ;
+7D: 7701 	;      LDA R7  1               ;result_ctrl = 1;
+7E: 7800 	;      LDA R8  0               ;number_ctrl = 0;
+7F: 7900 	;      LDA R9  0               ;nl_ctrl = 0;
+80: C0AB 	;      BZ  R0  F0              ;goto F0;
+81: 7A2A 	;  FB  LDA RA  0x2A            ;temp = 0x2a;
+82: 2AAC 	;      SUB RA  RA  RC          ;temp -= i;
+83: CA85 	;      BZ  RA  FD              ;if (temp==0) goto FD;
+84: C0AB 	;      BZ  R0  F0              ;goto F0;
+85: C88E 	;  FD  BZ  R8  FE              ;if (number_control==0) goto FE;
+86: 72F4 	;      LDA R2  X               ;R2* = X;
+87: 2FF1 	;      SUB RF  RF  R1          ;
+88: B20F 	;      STI R2  RF              ;parameter int* value;
+89: 2FF1 	;      SUB RF  RF  R1          ;
+8A: B00F 	;      STI R0  RF              ;parameter newline = 0;
+8B: FDC5 	;      JL  RD  PF              ;print()
+8C: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+8D: 1FF2 	;      ADD RF  RF  R2          ;
+8E: 72F7 	;  FE  LDA R2  M               ;R2* = M;
+8F: 2FF1 	;      SUB RF  RF  R1          ;
+90: B20F 	;      STI R2  RF              ;parameter int* value;
+91: 2FF1 	;      SUB RF  RF  R1          ;
+92: B10F 	;      STI R1  RF              ;parameter newline = 1;
+93: FDC5 	;      JL  RD  PF              ;print()
+94: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+95: 1FF2 	;      ADD RF  RF  R2          ;
+96: 8BF4 	;      LD  RB  X               ;
+97: 2441 	;      SUB R4  R4  R1          ;buffer_ptr--;
+98: A204 	;      LDI R2  R4              ;temp = *buffer_ptr;
+99: 13B0 	;      ADD R3  RB  R0          ;temp2 = X;
+9A: 2221 	;      SUB R2  R2  R1          ;temp -= 1;
+9B: C29F 	;  B0  BZ  R2  B1              ;if (temp==0) goto B1;
+9C: 1BB3 	;      ADD RB  RB  R3          ;X += temp2;
+9D: 2221 	;      SUB R2  R2  R1          ;temp--;
+9E: C09B 	;      BZ  R0  B0              ;goto B0;
+9F: 9BF4 	;  B1  ST  RB  X               ;
+A0: 72F4 	;      LDA R2  X               ;R2* = X;
+A1: 2FF1 	;      SUB RF  RF  R1          ;
+A2: B20F 	;      STI R2  RF              ;parameter int* value;
+A3: 2FF1 	;      SUB RF  RF  R1          ;
+A4: B00F 	;      STI R0  RF              ;parameter newline = 0;
+A5: FDC5 	;      JL  RD  PF              ;print()
+A6: 7202 	;      LDA R2  2               ;get 2 parameter out of stack
+A7: 1FF2 	;      ADD RF  RF  R2          ;
+A8: 7701 	;      LDA R7  1               ;result_ctrl = 1;
+A9: 7800 	;      LDA R8  0               ;number_ctrl = 0;
+AA: 7900 	;      LDA R9  0               ;nl_ctrl = 0;
+AB: C514 	;  F0  BZ  R5  A0              ;if (halt==0) goto A00;
+AC: 1FE0 	;      ADD RF  RE  R0          ;epilog: restore old stack pointer
+AD: AE0F 	;      LDI RE  RF              ;restore old base pointer
+AE: 0000 	;      HLT                     ;return 0;
+AF: 82FE 	;  POL LD  R2  0xFE            ;check control register
+B0: C2AF 	;      BZ  R2  POL             ;if control register is 0, goto POL    
+B1: 90FE 	;      ST  R0  0xFE            ;reset control register to 0
+B2: ED00 	;      JR  RD
+B3: 2FF1 	;  LL0 SUB RF  RF  R1          ;
+B4: BD0F 	;      STI RD  RF              ;PUSH RD
+B5: 2FF1 	;      SUB RF  RF  R1          ;prolog
+B6: BE0F 	;      STI RE  RF              ;PUSH RE
+B7: 1EF0 	;      ADD RE  RF  R0          ;initialize getchar() base pointer
+B8: FDAF 	;      JL  RD  POL             ;CALL polling routine    
+B9: 8CFF 	;      LD  RC  0xFF            ;read from stdin
+BA: 7203 	;      LDA R2  3               ;R2 = EOF;
+BB: 222C 	;      SUB R2  R2  RC          ;temp = EOF - RC
+BC: C2BE 	;      BZ  R2  L1              ;if (RC==EOF) goto L1
+BD: C0BF 	;      BZ  R0  L2              ;goto L2
+BE: 1510 	;  L1  ADD R5  R1  R0          ;halt = 1;
+BF: 1FE0 	;  L2  ADD RF  RE  R0          ;epilog
+C0: AE0F 	;      LDI RE  RF              ;
+C1: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+C2: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+C3: 1FF1 	;      ADD RF  RF  R1          ;
+C4: ED00 	;      JR  RD                  ;
+C5: 2FF1 	;  PF  SUB RF  RF  R1          ;
+C6: BD0F 	;      STI RD  RF              ;PUSH RD
+C7: 2FF1 	;      SUB RF  RF  R1          ;prolog
+C8: BE0F 	;      STI RE  RF              ;PUSH RE
+C9: 2EE1 	;      SUB RE  RE  R1          ;
+CA: A20E 	;      LDI R2  RE              ;R2 = &value;
+CB: 2EE1 	;      SUB RE  RE  R1          ;R3 = newline;
+CC: A30E 	;      LDI R3  RE              ;
+CD: 1EF0 	;      ADD RE  RF  R0          ;initialize printf() base pointer
+CE: 2FF1 	;      SUB RF  RF  R1          ;PUSH &value as local variable
+CF: B20F 	;      STI R2  RF              ;
+D0: 2FF1 	;      SUB RF  RF  R1          ;PUSH newline as local variable
+D1: B30F 	;      STI R3  RF              ;
+D2: FDAF 	;      JL  RD  POL             ;CALL polling routine
+D3: 1FF1 	;      ADD RF  RF  R1          ;
+D4: A20F 	;      LDI R2  RF              ;R2 = &value;
+D5: 2FF1 	;      SUB RF  RF  R1          ;
+D6: A202 	;      LDI R2  R2              ;R2 = value;
+D7: 92FF 	;      ST  R2  0xFF            ;printf("%d", *value);
+D8: A20F 	;      LDI R2  RF              ; 
+D9: C2DE 	;      BZ  R2  D0              ;if (nl==0) goto D0;
+DA: FDAF 	;      JL  RD  POL             ;CALL polling routine
+DB: 72F5 	;      LDA R2  N               ;R2 = newline;
+DC: A202 	;      LDI R2  R2              ; 
+DD: 92FF 	;      ST  R2  0xFF            ;
+DE: 1FE0 	;  D0  ADD RF  RE  R0          ;epilog
+DF: AE0F 	;      LDI RE  RF              ;
+E0: 1FF1 	;      ADD RF  RF  R1          ;POP RE
+E1: AD0F 	;      LDI RD  RF              ;POP return adress from stack
+E2: 1FF1 	;      ADD RF  RF  R1          ;
+E3: ED00 	;      JR  RD                  ;
+E4: 0000 	;  BUF     DUP 0x10            ;buffer
+F4: 0000 	;  X       DW  0               ;int X;
+F5: 800A 	;  N       DW  0x800A          ;int newline = 0x800A;
+F6: 802B 	;  P       DW  0x802B          ;int plus = 0x802B;
+F7: 802A 	;  M       DW  0x802A          ;int multiplier = 0x802A

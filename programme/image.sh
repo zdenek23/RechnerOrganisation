@@ -2,4 +2,4 @@
 
 echo "c3.toy"
 
-python toy2logisim.py < toy/c0.toy > tmp_files/image.txt
+python toy2logisim.py < team52_image.toy > tmp_files/image.txt
