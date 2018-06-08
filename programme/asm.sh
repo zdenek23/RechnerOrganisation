@@ -21,9 +21,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 ####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn0m.txt"
 
@@ -42,9 +39,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 #####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn1.txt"
 
@@ -63,9 +57,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 #####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn1m.txt"
 
@@ -84,9 +75,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 #####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn2.txt"
 
@@ -105,9 +93,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 #####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn2m.txt"
 
@@ -126,9 +111,6 @@ if [[ -s tmp_files/result.txt ]];
     fi
 
 #####################################################################
-echo "d0.asm"
-
-python atoyasm.py -s -p asm/d0.asm > toy/d0.toy
 
 echo "d0.toy with test_input_rpn3.txt"
 
