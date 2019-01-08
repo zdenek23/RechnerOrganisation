@@ -11,4 +11,5 @@ A3: Logisim simulation. Modify A2 so that it outputs ASCII-coded decimals (input
 
 A4: From C to assemply and Logisim simulation. Using stack and function calls in assembly language.
     Functionality same as A3, but implemented as machine code for TOY-computer.
+    Team of 2. team52.asm was done by me exclusively.
 
